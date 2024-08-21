@@ -12,7 +12,7 @@ class FilterMixin:
     # requirement to use the filter keyword: It is an optional implementation of a style of filtering in which
     # each filter is an ORM expression as implemented by DjangoFilterBackend and seems to be in alignment with
     # an interpretation of the JSON:API recommendations, including relationship chaining."
-    # Looks like a good solution.
+    # <--- Looks like a good solution.
     filter_backends = (
         filters.QueryParameterValidationFilter,
         filters.OrderingFilter,
@@ -42,7 +42,7 @@ class WalletViewset(
     serializer_class = serializers.WalletSerializer
     queryset = Wallet.objects.all().order_by("pk")
     filterset_fields = {
-        # the ones that the most sense from my point of view
+        # the ones that have the most sense from my point of view
         # however we need to consider the DB performance here
         "id": ("exact", "in"),
         "label": ("icontains", "iexact", "contains"),
@@ -71,6 +71,6 @@ class TransactionViewset(
         transaction = serializer.save()
         # In theory, it should be possible for the "invalid" transaction to pass the validation process,
         # but then we should have an error in api/models.py, which is not handled intentionally.
-        # 5xx responses would be handled by the monitoring/error reporting software, and we would see that something
-        # nasty is going on.
+        # 5xx responses would be handled by the monitoring/error reporting serivce, and we would see that something
+        # nasty is going on and the proper team would be notified.
         transaction.apply()

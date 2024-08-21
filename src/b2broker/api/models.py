@@ -4,7 +4,10 @@ from django.db import transaction
 
 
 class WalletManager(models.Manager):
-    def perform_transaction(self, wallet: "Wallet", transaction_obj: "Transaction"):
+    def perform_transaction(
+        self, wallet: "Wallet", transaction_obj: "Transaction"
+    ) -> "Wallet":
+        # lock the row
         with transaction.atomic():
             wallet = self.select_for_update().get(pk=wallet.pk)
             wallet.balance += transaction_obj.amount

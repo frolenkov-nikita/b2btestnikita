@@ -49,7 +49,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     def validate(self, data):
         wallet = data["wallet"]
 
-        if wallet.balance + data["amount"] < 0:
+        if (wallet.balance + data["amount"]) < 0:
             raise serializers.ValidationError(
                 "Transaction is not possible due to the insufficient amount."
             )
