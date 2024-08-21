@@ -1,12 +1,13 @@
 all: help
 
 help:
-	@echo "sample-dev-env				- Create sample environment for dev. purposes"
-	@echo "sample-prod-env				- Create sample environment for prod. purposes"
-	@echo "dev-run					 	- Launch development docker compose"
-	@echo "prod-run					 	- Launch production docker compose"
-	@echo "tests                        - Run pytest tests using docker compose."
-	@echo "coverage                     - Create coverage report."
+	@echo "sample-dev-env               - Create sample environment for dev. purposes"
+	@echo "sample-prod-env              - Create sample environment for prod. purposes"
+	@echo "dev-run                      - Launch development docker compose"
+	@echo "prod-run                     - Launch production docker compose"
+	@echo "tests                        - Run pytest tests using docker compose"
+	@echo "coverage                     - Create coverage report"
+	@echo "black                        - Run `black` linter"
 
 
 sample-dev-env:
