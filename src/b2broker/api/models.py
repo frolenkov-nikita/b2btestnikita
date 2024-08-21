@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.db import transaction
+from django.core.exceptions import ValidationError
+
+from .validators import NonZeroValidator
 
 
 class WalletManager(models.Manager):
@@ -30,11 +33,14 @@ class Wallet(models.Model):
 
     objects = WalletManager()
 
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(balance__gte=0), name="balance_gte_0"
+            ),
+        ]
+
     def save(self, *args, **kwargs):
-        # So we won't be able to introduce an inconsistency on a framework level
-        # However it would be possible to do it via SQL, so if it is required, then we should add a custom DB migration
-        # which produces SQL code like
-        # ALTER TABLE api_wallet ADD CONSTRAINT CHK_balance CHECK (balance>=0);'
         self.full_clean()
 
         super().save(*args, **kwargs)
@@ -61,7 +67,18 @@ class Transaction(models.Model):
         max_digits=24,
         decimal_places=18,
         editable=False,
+        validators=[NonZeroValidator(ValidationError)],
     )
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(condition=~models.Q(amount=0), name="amount_ne_0"),
+        ]
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+
+        super().save(*args, **kwargs)
 
     def apply(self):
         self.wallet = Wallet.objects.perform_transaction(self.wallet, self)

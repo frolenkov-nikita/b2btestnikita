@@ -153,7 +153,9 @@ class TestTransactionViewset(ViewSetTest):
         Returns200,
     ):
         transactions = lambda_fixture(
-            lambda make_transaction: [make_transaction(amount=a) for a in range(10)],
+            lambda make_transaction: [
+                make_transaction(amount=a + 1) for a in range(10)
+            ],
             autouse=True,
         )
         list_url = lambda_fixture(
@@ -171,7 +173,7 @@ class TestTransactionViewset(ViewSetTest):
         Returns200,
     ):
         transactions = lambda_fixture(
-            lambda make_transaction: [make_transaction(amount=a) for a in range(5)],
+            lambda make_transaction: [make_transaction(amount=a + 1) for a in range(5)],
             autouse=True,
         )
         list_url = lambda_fixture(

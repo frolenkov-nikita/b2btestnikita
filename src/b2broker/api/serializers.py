@@ -1,16 +1,7 @@
 from rest_framework_json_api import serializers
 
 from .models import Wallet, Transaction
-
-
-def non_negative_validator(value):
-    if value < 0:
-        raise serializers.ValidationError("Must be greater or equal to 0.")
-
-
-def non_zero_validator(value):
-    if value == 0:
-        raise serializers.ValidationError("Cannot be 0.")
+from .validators import NonZeroValidator, NonNegativeValidator
 
 
 class WalletSerializer(serializers.ModelSerializer):
@@ -18,7 +9,7 @@ class WalletSerializer(serializers.ModelSerializer):
         max_digits=27,
         decimal_places=18,
         read_only=True,
-        validators=[non_negative_validator],
+        validators=[NonNegativeValidator(serializers.ValidationError)],
     )
 
     class Meta:
@@ -34,7 +25,9 @@ class WalletSerializer(serializers.ModelSerializer):
 
 class TransactionSerializer(serializers.ModelSerializer):
     amount = serializers.DecimalField(
-        max_digits=27, decimal_places=18, validators=[non_zero_validator]
+        max_digits=27,
+        decimal_places=18,
+        validators=[NonZeroValidator(serializers.ValidationError)],
     )
     wallet = serializers.PrimaryKeyRelatedField(queryset=Wallet.objects.all())
 

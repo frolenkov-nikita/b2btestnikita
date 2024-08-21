@@ -1,7 +1,7 @@
 import pytest
 from pytest_lambda import lambda_fixture
 
-from api.models import Wallet
+from api.models import Wallet, Transaction
 
 
 @pytest.mark.django_db
@@ -26,6 +26,14 @@ class TestTransaction(ModelTestCase):
         transaction.apply()
 
         assert transaction.wallet.balance != wallet_balance
+
+    def test_cannot_create_invalid(self):
+        with pytest.raises(Exception):
+            Transaction.objects.create(amount=0, txid="Someid")
+
+    def test_cannot_update_to_invalid(self, transaction):
+        with pytest.raises(Exception):
+            Transaction.objects.filter(pk=transaction.pk).update(amount=0)
 
 
 class TestWallet(ModelTestCase):
@@ -54,3 +62,11 @@ class TestWallet(ModelTestCase):
 
         wallet = reload_object(wallet)
         assert wallet.balance == 0
+
+    def test_cannot_create_invalid(self):
+        with pytest.raises(Exception):
+            Wallet.objects.create(amount=-1, txid="Someid")
+
+    def test_cannot_update_to_invalid(self, wallet):
+        with pytest.raises(Exception):
+            Wallet.objects.filter(pk=wallet.pk).update(amount=-1)
