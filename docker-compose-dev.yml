@@ -1,0 +1,31 @@
+services:
+  webapp-dev:
+    extends:
+      file: docker-compose.yml
+      service: webapp
+    command:  sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    build:
+      dockerfile: Dockerfile.dev
+    env_file:
+      - ./env/dev.env
+    depends_on:
+      mysql-dev:
+        condition: service_healthy
+        restart: true
+    networks:
+      - dev
+  mysql-dev:
+    extends:
+      file: docker-compose.yml
+      service: mysql
+    env_file:
+      - ./env/dev.env
+    volumes:
+      - ./dev-dbdata:/var/lib/mysql/
+    networks:
+      - dev
+
+networks:
+  dev:

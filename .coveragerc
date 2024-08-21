@@ -1,0 +1,17 @@
+[run]
+omit =
+    */tests/*
+    */migrations/*
+    *settings*.py
+    *wsgi.py*
+    *asgi.py*
+    *manage.py*
+    *urls.py*
+    *admin.py*
+    *apps.py*
+    *factories.py*
+    *conftest.py*
+    *__init__.py*
+
+[report]
+skip_empty = true

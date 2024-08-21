@@ -1,0 +1,8 @@
+# syntax = edrevo/dockerfile-plus
+
+INCLUDE+ Dockerfile
+
+WORKDIR /tmp
+ADD requirements.test.txt /tmp
+
+RUN pip install -r requirements.test.txt

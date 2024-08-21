@@ -1,0 +1,25 @@
+services:
+  webapp:
+    env_file:
+      - ./env/prod.env
+    build:
+      context: ./docker/webapp
+      dockerfile: Dockerfile
+
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src/b2broker:/app
+    working_dir: /app
+  mysql:
+    env_file:
+      - ./env/prod.env
+    image: mysql:8.0.39-debian
+    restart: always
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55

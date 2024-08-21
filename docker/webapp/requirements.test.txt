@@ -1,0 +1,10 @@
+pytest-django
+pytest-factoryboy
+pytest-mock
+pytest-responses
+pytest-xdist
+pytest-lambda
+pytest-drf
+pytest-xdist
+coverage
+ipdb
