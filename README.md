@@ -1,12 +1,22 @@
-# If you don't have make (?) in your os
+# If you don't have make (?) available in your OS
 
-All handy scripts are gathered in `Makefile` so, if you cannot use make, please just copy paste the corresponding commands from the `Makefile`
+All handy scripts are gathered in `Makefile` so, if you cannot use make, please just copy-paste the corresponding commands from the `Makefile`
 
 # Quickstart
 
 `$ make sample-prod-env`
 
 `$ make prod-run`
+
+
+or (from `Makefile`)
+
+`$ mkdir env`
+
+`$ cp ./sample_prod.env ./env/prod.env`
+
+`$ docker compose -f docker-compose-prod.yml up --remove-orphans`
+
 
 go to http://localhost:4444/api/v1/schema/ui/
 
